@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Knowledge Base</title>
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+        
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        
+        #property {
+            width: 94%;
+            height: 29%;
+        }
+        
+        #proul {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        #proul::-webkit-scrollbar {
+            width: 4px;
+            /*height: 4px;*/
+        }
+        
+        #proul::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        #proul::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.9);
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .autocomplete-suggestions {
+            max-height: 200px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid #999;
+            background: #efefef;
+            cursor: default;
+            overflow: auto;
+            -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
+            -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
+            box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
+        }
+        
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .autocomplete-no-suggestion {
+            padding: 2px 5px;
+        }
+        
+        .autocomplete-selected {
+            background: #efefef;
+        }
+        
+        .autocomplete-suggestions strong {
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+        
+        .autocomplete-group strong {
+            font-weight: bold;
+            font-size: 16px;
+            color: #000;
+            display: block;
+            border-bottom: 1px solid #000;
+        }
+        
+        #input_div {
+            padding: 2% 2% 2% 2%;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        input,
+        input:focus {
+            outline: medium;
+            text-align: center;
+            margin: auto;
+            line-height: 40px;
+            width: 40%;
+            background: #efefef;
+            border-radius: 40px;
+            border: none;
+        }
+        
+        .btn {
+            width: 8%;
+        }
+        
+        .sidebar {
+            padding-left: 1%;
+            color: #eee;
+            width: 24%;
+            position: absolute;
+            left: 0;
+            top: 8%;
+            height: 92%;
+            transition: all 0.2s ease 0s;
+            background-color: #0b2838;
+        }
+        
+        .sidebar ul {
+            font-size: small;
+        }
+		
+		.query_sidebar {
+			height: 50%;
+		}
+        
+        .main {
+            background-color: #0b2838;
+            overflow: hidden;
+            position: absolute;
+            left: 25%;
+            right: 0;
+            top: 8%;
+            height: 92%;
+            transition: all 0.2s ease 0s;
+        }
+        
+        .big-page .sidebar {
+            left: -25%;
+        }
+        
+        .big-page .main {
+            left: 0;
+        }
+        
+        #banner {
+            color: #fff;
+            width: 100%;
+            background: #0d1c25;
+            height: 8%;
+            display: block;
+            opacity: 0.85;
+        }
+        
+        canvas {
+            background-color: #0b2838;
+        }
+        
+        .link {
+            margin-top: 10px;
+            display: inline-block;
+            overflow: hidden;
+        }
+        
+        .link button {
+            font-size: 16px;
+            padding: 10px 10px;
+            border: 2px solid transparent;
+            background-color: #0d1c25;
+        }
+        
+        .entity_btn,
+        .rela_btn,
+        .entity_rela_btn,
+        .banner_btn, 
+		.query_btn {
+            width: 30%;
+            border-radius: 5px;
+            color: #efefef;
+            padding: 8px 20px;
+            margin: 8px 5px;
+            background-color: #0b2838;
+            text-decoration: none;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+		
+       .banner_btn {
+            width: 120px;
+            display: inline-block;
+            font-weight: bolder;
+        }
+		
+		.query_btn {
+		     width: 5px;
+		     display: inline-block;
+		     font-weight: bolder;
+			 display: inline-block;
+			 padding: 8px 26px 8px 8px;
+		 }
+        
+        .selected {
+            margin: 10px;
+            border-color: #eee !important;
+            /* background-color: "#eee"; */
+        }
+		
+		.query_text_bar {
+			width: 60%;
+			display: inline;
+		}
+		
+		table{
+			border-collapse: collapse;
+			border-spacing: 0;
+			color: #ffffff;
+			text-align: center;
+			margin: auto;
+		}
+		th, td{
+			padding: 10px 20px;
+			border: 1px solid #ffffff;
+		}
+		.bar {
+		    border-top-style: solid; 
+		
+		    border-width: 1px; 
+		
+		    border-top-color: #ffffff;
+		
+		}
+    </style>
+</head>
+
+
+<body>
+    <script type="text/javascript" src="js/src/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/src/g6.min.js"></script>
+    <script type="text/javascript" src="js/src/axios.min.js"></script>
+    <script type="text/javascript" src="js/src/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="js/formattrans.js"></script>
+
+    <!-- /* 图的画布容器 */ -->
+    <div id="banner">
+        <div class="link">
+            <button class="banner_btn selected" id="side_change">Sidebar</button>
+        </div>
+    </div>
+    <div>
+
+        <div id='slider' class="sidebar">
+
+            <!-- <div id='entity'>
+                <h4>主要实体类型查询</h4>
+            </div> -->
+            <div class=bar id='entity'>
+                <h3>实体</h3>
+            </div>
+            <div class=bar id="entity_rela">
+                <h3>实体的关系</h3>
+            </div>
+            <div class=bar id='relation'>
+                <h3>关系</h3>
+            </div>
+
+            <div class = bar id='query'>
+                <h3>查询</h3>
+				<div id='query1' class="query_sidebar">
+					<h5 class="query_text_bar">查询与某个蛋白质相关联度前10的蛋白质</h5>
+					<input type="text" placeholder="Enter protein name" name="q1" id="q1" />
+				    <button class="query_btn selected" id="query1_btn">Q1</button>
+				</div>
+				<div id='query2' class="query_sidebar">
+					<h5 class="query_text_bar">查询连接公理关联度大于X的一对蛋白质（随机返回 | 限制50条）</h5>
+				    <input type="number" oninput="if(value>998)value=998;if(value<0)value=0" style="width:20%" placeholder="Enter number" name="q2" id="q2" />
+					<button class="query_btn selected" id="query2_btn">Q2</button>
+				</div>
+				<div id='query3' class="query_sidebar">
+					<h5 class="query_text_bar">查询所有可能是棒状体的蛋白（随机返回 | 限制50个）</h5>
+				    <button class="query_btn selected" id="query3_btn">Q3</button>
+				</div>
+            </div>
+			<div class=bar id='data_mining'>
+			    <h3>数据挖掘</h3>
+				<div id='mining1' class="query_sidebar">
+					<h5 class="query_text_bar">度中心性（限制20条）</h5>
+				    <button class="query_btn selected" id="mining1_btn">M1</button>
+				</div>
+				<div id='mining2' class="query_sidebar">
+					<h5 class="query_text_bar">KNN聚类（限制20条）</h5>
+				    <button class="query_btn selected" id="mining2_btn">M2</button>
+				</div>
+				<div id='mining3' class="query_sidebar">
+					<h5 class="query_text_bar">Louvain社区检测（随机返回 | 限制20条）</h5>
+				    <button class="query_btn selected" id="mining3_btn">M3</button>
+					
+				</div>
+			</div>
+
+			<div class=bar id="property">
+			    <h3>属性</h3>
+			    <div id="proul">
+			
+			    </div>
+			</div>
+			
+			
+        </div>
+        <div class="main">
+            <div id="input_div">
+                <!-- <input type="text" placeholder="Please enter key words..." name="country" id="autocomplete" /> -->
+
+            </div>
+            <div id="mountNode"></div>
+        </div>
+
+
+    </div>
+
+    <script>
+        const config = {
+                ip: 'http://' + window.location.hostname.toString(),
+                port: 3000,
+            }
+		// console.log("!!!!!!config:");
+		// console.log(config);
+
+        const color_set = ["#dd6b66",
+            "#759aa0",
+            "#e69d87",
+            "#8dc1a9",
+            "#ea7e53",
+            "#eedd78",
+            "#73a373",
+            "#73b9bc",
+            "#7289ab",
+            "#91ca8c",
+            "#f49f42"
+        ]
+
+		var class_list = [];
+
+        // autocomplete
+        window.onload = async function() {
+			// 删除以前创建的图
+			// var delete_graph = `CALL gds.graph.drop("myGraph")`
+			// axios.get(`${config.ip}:${config.port}/all`, {
+			// 	params: {
+			// 		query: delete_graph
+			// 	}
+			// }).then(res => {}).catch(err => {})
+			
+			
+			// 创建图映射用于数据挖掘
+			var query_graph_exists = `CALL gds.graph.exists("myGraph")`
+			var create_graph = `CALL gds.graph.project(
+							"myGraph",
+							["owl__Class", "owl__Axiom"],
+							{owl__annotatedSource: {orientation: "REVERSE"},
+							owl__annotatedTarget: {orientation: "NATURAL"}
+							}
+						)`
+						
+			axios.get(`${config.ip}:${config.port}/all`, {
+				params: {
+					query: query_graph_exists
+				}
+			}).then(res => {
+				var data = res.data.data;
+				console.log("?data");
+				console.log(data);
+				if (data[0][1]) {
+					console.log("graph exist");
+				}
+				else {
+					console.log("graph don't exist, create");
+					axios.get(`${config.ip}:${config.port}/all`, {
+						params: {
+							query: create_graph
+						}
+					})
+				}
+			}).catch(err => {
+				console.log(err)
+			})
+			
+			// 创建fastRP用于KNN
+			var create_fastRP = `
+					CALL gds.fastRP.mutate('myGraph',  {
+					    embeddingDimension:16,
+					    randomSeed:7474,
+					    mutateProperty:'embedding'
+					})`
+			axios.get(`${config.ip}:${config.port}/all`, {
+				params: {
+					query: create_fastRP
+				}
+			}).then(res => {}).catch(err => {
+				console.log(err)
+			})
+			
+			// 运行 Louvain 算法
+			var louvain = "CALL gds.louvain.mutate('myGraph', {mutateProperty:'communityId'})"
+			axios.get(`${config.ip}:${config.port}/all`, {
+				params: {
+					query: louvain
+				}
+			})
+			
+            const person_info = {
+                category: 'Person',
+                search_type: 'name',
+            }
+            const movie_info = {
+                category: 'Movie',
+                search_type: 'title',
+            }
+			const class_info = {
+				category: 'owl__Class',
+				search_type: 'rdfs__label',
+			}
+
+            const Person_Teams = await getData(`MATCH (n:${person_info.category}) RETURN n.${person_info.search_type}`);
+            const Movie_Teams = await getData(`MATCH (n:${movie_info.category}) RETURN n.${movie_info.search_type}`);
+            const Class_Teams = await getData(`MATCH (n:${class_info.category}) RETURN n.${class_info.search_type}`);
+			class_list = Class_Teams;
+			// var p = $.map(Person_Teams, function(team) {
+   //              return {
+   //                  value: team,
+   //                  data: person_info
+   //              };
+   //          });
+   //          var m = $.map(Movie_Teams, function(team) {
+   //              return {
+   //                  value: team,
+   //                  data: movie_info
+   //              };
+   //          });
+			var c = $.map(Class_Teams, function(team) {
+			    return {
+			        value: team,
+			        data: class_info
+			    };
+			});
+			
+			// console.log("!!!class_list");
+			// console.log(class_list);
+			
+            // var teams = p.concat(m);
+            // Initialize autocomplete with local lookup:
+            $('#q1').devbridgeAutocomplete({
+                lookup: c,
+
+                minChars: 1,
+                onSelect: function(suggestion) {
+                    console.log(suggestion.data);
+                    // readNeo4j(suggestion, 3);
+                },
+                showNoSuggestionNotice: true,
+                noSuggestionNotice: 'Sorry.. Try other keywords...',
+                groupBy: 'category'
+            });
+
+            var entity_list = await getData(`MATCH(n) RETURN distinct labels(n), count(n)`);
+            var rela_list = await getData(`MATCH p=()-[r]->() RETURN distinct type(r), count(r)`);
+            // console.log("!!!!!!!entity_list:")
+            // console.log(entity_list)
+			// console.log("!!!!!!!rela_list:")
+			// console.log(rela_list)
+            for (let entity in entity_list) {
+				if (entity_list[entity][0].length > 1) {
+					entity_list[entity][0].shift();
+				}
+				else {
+					if (entity_list[entity][0][0] == "Resource") {
+						entity_list[entity][1] = 11977636;
+					}
+				}
+				
+				// 显示哪些实体
+				if (entity_list[entity][0] == "owl__Class" || entity_list[entity][0] == "owl__Axiom" ||
+					entity_list[entity][0] == "owl__Restriction") {
+						$('#entity').append(`<button class="entity_btn" onclick="readNeo4j(this,0)" name='${entity_list[entity][0]}'><b>${entity_list[entity][0].toString().substr(5)}</b> (${entity_list[entity][1]})</button>`);
+						$('#entity_rela').append(`<button class="entity_rela_btn" onclick="readNeo4j(this,1)" name='${entity_list[entity][0]}'><b>${entity_list[entity][0].toString().substr(5)}</b> (${entity_list[entity][1]})</button>`);
+					}
+            }
+            for (let relation in rela_list) {
+				if (rela_list[relation][0] == "owl__someValuesFrom" || rela_list[relation][0] == "owl__onProperty" || rela_list[relation][0] == "owl__annotatedTarget" || 
+					rela_list[relation][0] == "owl__annotatedProperty" || rela_list[relation][0] == "owl__annotatedSource") {
+						$('#relation').append(`<button class="rela_btn" onclick="readNeo4j(this,4)" name='${rela_list[relation][0]}'><b>${rela_list[relation][0].toString().substr(5)}</b> (${rela_list[relation][1]})</button>`);
+					}
+				else if (rela_list[relation][0] == "rdfs__subClassOf") {
+					$('#relation').append(`<button class="rela_btn" onclick="readNeo4j(this,4)" name='${rela_list[relation][0]}'><b>${rela_list[relation][0].toString().substr(6)}</b> (${rela_list[relation][1]})</button>`);
+				}
+                
+            }
+        };
+
+		function clear_text() {
+			var obj = document.getElementById("input_div");
+			obj.innerHTML = "";
+		}
+		
+		function clear_g6() {
+			graph.data({});
+			graph.render();
+		}
+
+		// 点某些前端的按钮就触发该函数从neo4j读取，node是每个实例，mode是查询的类型
+        function readNeo4j(node, mode) {
+            console.log(node);
+            // show entities
+            if (mode == 0) {
+                console.log(node);
+                var q = `MATCH p=(n:${node.name}) RETURN n,labels(n) LIMIT 100`;
+                // show relationships of entity
+            } else if (mode == 1) {
+                var q = `MATCH p=(n:${node.name})-[a]-(x) RETURN n,labels(n),a,type(a),x,labels(x) LIMIT 100`;
+                // show relationships
+            } else if (mode == 4) {
+                var q = `MATCH p=(n)-[r:${node.name}]->(x) RETURN n,labels(n),r,type(r),x,labels(x) LIMIT 25`;
+                // Doble click to expand
+            } else if (mode == 2) {
+                var q = `MATCH (n)-[a]-(x) WHERE id(n)=${node.id} RETURN n,labels(n),a,type(a),x,labels(x) LIMIT 100`;
+                $('#autocomplete').val(node.label);
+                //Search from Search Box
+            } else if (mode == 3) {
+                var q = `MATCH (n:${node.data.category}{${node.data.search_type}:'${node.value}'})-[a]-(x) RETURN n,labels(n),a,type(a),x,labels(x)`;
+                // console.log(q);
+                $('#autocomplete').val(node.value);
+
+            }
+            return new Promise((resolve, reject) => {
+                // console.log(`${config.ip}:${config.port}/all`);
+                axios.get(`${config.ip}:${config.port}/all`, {
+                    params: {
+                        query: q
+                    }
+                }).then(res => {
+					// console.log("!!!!!!!res.data:");
+     //                console.log(res.data)
+                    content = nodesFoldToD3(res.data);
+
+                    // console.log(content)
+                    content = JSON.parse(content);
+                    var data = content;
+					// console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata");
+     //                console.log(data);
+					clear_text()
+					clear_g6();
+                    changeStyle(data)
+                    graph.data(data);
+                    graph.render();
+                    //  console.log(content);
+
+
+                }).catch(err => {
+                    console.log(err)
+                })
+            });
+        }
+
+		$("#side_change").click(toggleSidebar);
+        function toggleSidebar() {
+
+            $("body").toggleClass("big-page");
+            var obj = this;
+            $(obj).toggleClass("selected");
+
+
+            return false;
+        }
+		
+		$("#query1_btn").click(query1);
+		function query1() {
+			clear_text();
+			var protein_name = $('#q1').val();
+			if (class_list.includes(protein_name)) {
+				var q = `match (s_p:owl__Class)-[s:owl__annotatedSource]-(r:owl__Axiom)-[t:owl__annotatedTarget]-(d_p:owl__Class)
+					WHERE s_p.rdfs__label="${protein_name}"
+					return s_p, labels(s_p), s, type(s), r, labels(r), t, type(t), d_p, labels(d_p)
+					Order by r.ns1__SWO_0000425 DESC
+					LIMIT 10`;
+				return new Promise((resolve, reject) => {
+					// console.log(`${config.ip}:${config.port}/all`);
+					axios.get(`${config.ip}:${config.port}/all`, {
+						params: {
+							query: q
+						}
+					}).then(res => {
+						// console.log("????res");
+						// console.log(res);
+						// console.log("!!!!!!!query1:res.data:");
+						// console.log(res.data)
+						content = nodesFoldToD3(res.data);
+				
+						// console.log(content)
+						content = JSON.parse(content);
+						var data = content;
+						// console.log("????data");
+						// console.log(data);
+						changeStyle(data)
+						graph.data(data);
+						graph.render();
+						//  console.log(content);
+					}).catch(err => {
+						console.log(err)
+					})
+				});
+			}
+			else {
+				var not_found = `<h3 style="color:white">抱歉, 该蛋白质不存在</h3>`;
+				clear_text()
+				clear_g6();
+				$('#input_div').append(not_found);
+			}
+		}
+		
+		$("#query2_btn").click(query2);
+		function query2() {
+			clear_text();
+			var number = $('#q2').val();
+			// if (number >= 0 && number )
+			var q = `match (p1:owl__Class)-[rs:owl__annotatedSource]-(a:owl__Axiom)-[rt:owl__annotatedTarget]-(p2:owl__Class)
+				where  a.ns1__SWO_0000425 > "${number}"
+				with p1, rs, a, rt, p2, rand() AS number
+				RETURN p1, labels(p1), rs, type(rs), a, labels(a), rt, type(rt), p2, labels(p2)
+				ORDER BY number
+				LIMIT 50`;
+			return new Promise((resolve, reject) => {
+			    // console.log(`${config.ip}:${config.port}/all`);
+			    axios.get(`${config.ip}:${config.port}/all`, {
+			        params: {
+			            query: q
+			        }
+			    }).then(res => {
+					console.log("!!!Res:");
+					console.log(res);
+			        content = nodesFoldToD3(res.data);
+			
+			        // console.log(content)
+			        content = JSON.parse(content);
+			        var data = content;
+			        console.log(data);
+			        changeStyle(data)
+			        graph.data(data);
+			        graph.render();
+			        //  console.log(content);
+			
+			
+			    }).catch(err => {
+			        console.log(err)
+			    })
+			});
+		}
+		
+		
+		$("#query3_btn").click(query3);
+		function query3() {
+			clear_text();
+			var q = `MATCH (n:owl__Class) 
+					where n.rdfs__label contains("RAP") 
+					with n, rand() as num
+					RETURN n, labels(n)
+					order by num
+					LIMIT 50`;
+			return new Promise((resolve, reject) => {
+			    // console.log(`${config.ip}:${config.port}/all`);
+			    axios.get(`${config.ip}:${config.port}/all`, {
+			        params: {
+			            query: q
+			        }
+			    }).then(res => {
+			        content = nodesFoldToD3(res.data);
+			
+			        // console.log(content)
+			        content = JSON.parse(content);
+			        var data = content;
+			        console.log(data);
+			        changeStyle(data)
+			        graph.data(data);
+			        graph.render();
+			        //  console.log(content);
+			
+			
+			    }).catch(err => {
+			        console.log(err)
+			    })
+			});
+		}
+
+		$("#mining1_btn").click(mining1);
+		function mining1() {
+			var q = `CALL gds.degree.stream('myGraph')
+					YIELD nodeId, score
+					RETURN gds.util.asNode(nodeId).rdfs__label AS p_name, score AS axiom_num
+					ORDER BY axiom_num DESCENDING
+					LIMIT 20`;
+			return new Promise((resolve, reject) => {
+			    // console.log(`${config.ip}:${config.port}/all`);
+			    axios.get(`${config.ip}:${config.port}/all`, {
+			        params: {
+			            query: q
+			        }
+			    }).then(res => {
+					var data = res.data.data;
+					console.log("!!!!data:");
+					console.log(data);
+					var s = `
+						<h3 style="color:white">度中心性-关于某个蛋白质拥有的公理数(top20)</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Protain_Name</th>
+									<th>Axiom_Num</th>
+								</tr>
+							</thead>
+							<tbody>
+						`
+					for (let i in data) {
+						var th1 = "<th>" + data[i][0] + "</th>";
+						var th2 = "<th>" + data[i][1] + "</th>";
+						var tr = "<tr>" + th1 + th2 + "</tr>";
+						s += tr;
+					}
+					
+					s += "</tbody></table>"
+					clear_text()
+					clear_g6();
+					$('#input_div').append(s);
+			    }).catch(err => {
+			        console.log(err)
+			    })
+			});
+		}
+		
+		$("#mining2_btn").click(mining2);
+		function mining2() {
+			clear_text()
+			clear_g6();
+			var q = `CALL gds.knn.stream('myGraph', {nodeLabels:['owl__Class'], nodeProperties:['embedding'], topK:1})
+					YIELD  node1, node2, similarity
+					RETURN gds.util.asNode(node1).rdfs__label AS protein_name1,
+						gds.util.asNode(node2).rdfs__label AS protein_name2,
+						similarity
+					LIMIT 20`;
+			return new Promise((resolve, reject) => {
+			    // console.log(`${config.ip}:${config.port}/all`);
+			    axios.get(`${config.ip}:${config.port}/all`, {
+			        params: {
+			            query: q
+			        }
+			    }).then(res => {
+					var data = res.data.data;
+					console.log("!!!!data:");
+					console.log(data);
+					var s = `
+						<h3 style="color:white">KNN聚类-关于某个两个蛋白质的相似度(limit20)</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Protain1_Name</th>
+									<th>Protain2_Name</th>
+									<th>Similarity</th>
+								</tr>
+							</thead>
+							<tbody>
+						`
+					for (let i in data) {
+						var th1 = "<th>" + data[i][0] + "</th>";
+						var th2 = "<th>" + data[i][1] + "</th>";
+						var th3 = "<th>" + data[i][2] + "</th>";
+						var tr = "<tr>" + th1 + th2 + th3 + "</tr>";
+						s += tr;
+					}
+					
+					s += "</tbody></table>"
+					clear_text()
+					clear_g6();
+					$('#input_div').append(s);
+			
+			    }).catch(err => {
+			        console.log(err)
+			    })
+			});
+		}
+		
+		$("#mining3_btn").click(mining3);
+		function mining3() {
+			clear_text()
+			clear_g6();
+			var q = `CALL gds.graph.streamNodeProperty('myGraph','communityId', ['owl__Class'])
+						YIELD nodeId, propertyValue
+						WITH gds.util.asNode(nodeId) AS n, propertyValue AS communityId, rand() as number
+						WHERE n:owl__Class
+						RETURN n.rdfs__label, communityId 
+						ORDER by number
+						LIMIT 20 `;
+			return new Promise((resolve, reject) => {
+			    // console.log(`${config.ip}:${config.port}/all`);
+			    axios.get(`${config.ip}:${config.port}/all`, {
+			        params: {
+			            query: q
+			        }
+			    }).then(res => {
+					var data = res.data.data;
+					console.log("!!!!data:");
+					console.log(data);
+					var s = `
+						<h3 style="color:white">Louvain社区检测-给不同蛋白质分配社区ID(limit20)</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>Protain_Name</th>
+									<th>communityId</th>
+								</tr>
+							</thead>
+							<tbody>
+						`
+					for (let i in data) {
+						var th1 = "<th>" + data[i][0] + "</th>";
+						var th2 = "<th>" + data[i][1] + "</th>";
+						var tr = "<tr>" + th1 + th2 + "</tr>";
+						s += tr;
+					}
+					
+					s += "</tbody></table>"
+					clear_text()
+					clear_g6();
+					$('#input_div').append(s);
+			
+			    }).catch(err => {
+			        console.log(err)
+			    })
+			});
+		}
+
+
+        async function getFromNeo4j(para) {
+            return await axios.get(`${config.ip}:${config.port}/all?query=${para}`)
+        }
+
+        async function getData(para) {
+            let neo4jData = await getFromNeo4j(para);
+            return neo4jData.data.data
+
+            // return group_Teams
+        }
+    </script>
+    <script>
+        // G6 action
+        G6.registerBehavior('node-activate', {
+            getDefaultCfg() {
+                return {
+                    multiple: true
+                };
+            },
+            getEvents() {
+                return {
+                    'node:mouseenter': 'onMouseenter',
+                    'node:dblclick': 'onDblclick'
+                };
+            },
+            onMouseenter(e) {
+
+                $('#proul').children().remove();
+                var pros = $.extend({}, e.item.getModel().properties);
+				console.log("e.item.getModel()");
+				console.log(e.item.getModel());
+                for (var p in pros) {
+                    $('#proul').append(
+                        '<ul class="pro_slider"><li><b>' + p + ' : </b> ' + pros[p] + '</li>')
+                };
+            },
+
+
+            onDblclick(e) {
+                readNeo4j(e.item.getModel(), 2)
+                    // console.log(e.item.getModel());
+            }
+        });
+
+
+
+        const graph = new G6.Graph({
+            container: 'mountNode',
+            width: window.screen.availWidth,
+            height: document.body.clientHeight,
+            modes: {
+                default: ['drag-node', 'node-activate'],
+            },
+            layout: {
+                type: 'force',
+                center: [window.screen.availWidth * 0.45, document.body.clientHeight * 0.4],
+                preventOverlap: true,
+                linkDistance: 180,
+            },
+
+            defaultNode: {
+                size: 28,
+                color: '#5B8FF9',
+                style: {
+                    lineWidth: 2,
+                    fill: '',
+                    stroke: '',
+                },
+                label: 'node-label',
+                labelCfg: {
+                    position: 'top',
+                    style: {
+                        fill: '#ddd',
+                    },
+                }
+
+            },
+            defaultEdge: {
+                size: 1,
+                color: '#aaa',
+                label: 'node-label',
+                labelCfg: {
+                    style: {
+                        fill: '#ddd',
+                        stroke: '',
+                    },
+                },
+            }
+        });
+
+
+        function changeStyle(data) {
+            const nodes = data.nodes;
+
+            nodes.forEach((node) => {
+
+                if (!node.style) {
+                    node.style = {};
+                }
+                node.style = {
+                    fill: color_set[node.id % color_set.length],
+                    stroke: '',
+                };
+
+                switch (
+                    node.properties.type // Configure the graph based on the 'type' of nodes 
+                ) {
+                    case ('Person'):
+                        {
+                            node.size = 32;
+                            break;
+                        }
+                }
+            });
+        }
+
+        function refreshDragedNodePosition(e) {
+            const model = e.item.get('model');
+            model.fx = e.x;
+            model.fy = e.y;
+        }
+        graph.on('node:dragstart', (e) => {
+            graph.layout();
+            refreshDragedNodePosition(e);
+        });
+        graph.on('node:drag', (e) => {
+            refreshDragedNodePosition(e);
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "visual-knowledge-graph-system-main",
+  "version": "1.0.0",
+  "description": "Easy visual knowledge graph system with G6, Neo4j database and Nodejs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "koa": "^2.13.4",
+    "koa-router": "^12.0.0",
+    "koa2-cors": "^2.0.6",
+    "neo4j-driver": "^5.0.1",
+    "node-neo4j": "^2.0.3"
+  }
+}
